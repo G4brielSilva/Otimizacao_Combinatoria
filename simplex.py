@@ -1,14 +1,17 @@
 import numpy as np
 import sys
 
-def criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes):
+def criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes, otimizacao):
     num_restricoes = len(coeficientes_restricoes)
     num_variaveis = len(coeficientes_funcao_objetivo)
 
     tableau = np.zeros((num_restricoes + 1, num_variaveis + num_restricoes + 1))
 
     # Configurar a função objetivo na primeira linha do tableau
-    tableau[0, :num_variaveis] = -coeficientes_funcao_objetivo
+    if (otimizacao):
+        tableau[0, :num_variaveis] = coeficientes_funcao_objetivo
+    else:
+        tableau[0, :num_variaveis] = -coeficientes_funcao_objetivo
 
     # Configurar as restrições e os termos independentes
     for i in range(num_restricoes):
@@ -54,5 +57,5 @@ if __name__ == '__main__':
     operations = np.array(operations)
     termos_independentes = np.array(termos_independentes)
 
-    tableu = criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes)
+    tableu = criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes, otimizacao)
     print(tableu)
