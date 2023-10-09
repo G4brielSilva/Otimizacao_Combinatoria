@@ -1,11 +1,25 @@
 import numpy as np
 import sys
 
+def criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes):
+    num_restricoes = len(coeficientes_restricoes)
+    num_variaveis = len(coeficientes_funcao_objetivo)
+
+    tableau = np.zeros((num_restricoes + 1, num_variaveis + num_restricoes + 1))
+
+    # Configurar a função objetivo na primeira linha do tableau
+    tableau[0, :num_variaveis] = -coeficientes_funcao_objetivo
+
+    # Configurar as restrições e os termos independentes
+    for i in range(num_restricoes):
+        tableau[i + 1, :num_variaveis] = coeficientes_restricoes[i]
+        tableau[i + 1, num_variaveis + i] = 1  # Adicionando variáveis de folga
+        tableau[i + 1, -1] = termos_independentes[i]
+
+    return tableau
+
 def arrayToFloat(array):
-    print(array)
-    arr = list( map( lambda val: float(val), array ) )
-    print(arr)
-    return arr
+    return list( map( lambda val: float(val), array ) )
 
 def arrayToInt(array):
     return list( map( lambda val: int(val), array ) )
@@ -22,7 +36,7 @@ if __name__ == '__main__':
     lines = content.split('\n')
     
     num_restricoes, num_variaveis, otimizacao = arrayToInt(lines[0].split(' '))
-    coeficientes_funcao_objetivo = arrayToFloat(lines[1].split(' ')) 
+    coeficientes_funcao_objetivo = arrayToFloat(lines[1].split(' '))
     coeficientes_funcao_objetivo = np.array(coeficientes_funcao_objetivo)
 
     coeficientes_restricoes = []
@@ -34,15 +48,11 @@ if __name__ == '__main__':
         
         coeficientes_restricoes.append(arrayToFloat(coeficientes_restricao))
         operations.append(operation)
-        termos_independentes.append(arrayToFloat(termo_independente))
-
+        termos_independentes.append(float(termo_independente))
+    
     coeficientes_restricoes = np.array(coeficientes_restricoes)
     operations = np.array(operations)
     termos_independentes = np.array(termos_independentes)
 
-    # print(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes)
-
-    tableu_simplex = np.column_stack((coeficientes_restricoes, termos_independentes))
-    tableu_simplex = np.vstack((coeficientes_funcao_objetivo, tableu_simplex))
-
-    # print(tableu_simplex)
+    tableu = criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_independentes)
+    print(tableu)
