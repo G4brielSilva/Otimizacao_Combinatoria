@@ -12,7 +12,7 @@ def criar_tableau(coeficientes_funcao_objetivo, coeficientes_restricoes, termos_
     for i in range(num_restricoes):
         if termos_independentes[i] < 0:
             tableau[0] = -tableau[0]
-            termos_independentes[i] = -termos_independentes
+            termos_independentes = -termos_independentes
             if operations[i] == "<=":
                 operations[i] = ">="
             elif operations[i] == ">=":
