@@ -1,6 +1,6 @@
 import pandas as pd
 
-with open("./problema_lp/problema3.txt", "r") as arq:
+with open("./problema_lp/problema.txt", "r") as arq:
     conteudo = arq.read()
 linhas = conteudo.split("\n")
 
@@ -43,8 +43,14 @@ for i in range(1, int(conteudo[0]) + 2):
     listona.append(lista)
     lista = []
 
-df = pd.DataFrame(listona)
+tableauInicial = pd.DataFrame(listona)
 listona = []
-df = df.fillna(0)
-df[int(conteudo[2])] = df[int(conteudo[2])].astype(float)
-print(df)
+tableauInicial = tableauInicial.fillna(0)
+tableauInicial[int(conteudo[2])] = tableauInicial[int(conteudo[2])].astype(float)
+
+# começando a maldade
+if tableauInicial[0][0] <= tableauInicial[1][0]:
+    pivo = tableauInicial[0][0]
+if tableauInicial[1][0] <= tableauInicial[0][0]:
+    pivo = tableauInicial[1][0]
+    
