@@ -4,13 +4,13 @@ with open("./problema_lp/problema1.txt", "r") as arq:
     content = arq.read()
 lines = content.split("\n")
 
-teste = []
+listaSinalTrocado = []
 if lines[0].split(" ")[2] == "1":
     for i in range(len(lines[1].split(" "))):
-        teste = lines[1].split(" ")
-        for i in range(len(teste)):
-            teste[i] = str(float(teste[i]) * -1)
-    lines[1] = " ".join(teste)
+        listaSinalTrocado = lines[1].split(" ")
+        for i in range(len(listaSinalTrocado)):
+            listaSinalTrocado[i] = str(float(listaSinalTrocado[i]) * -1)
+    lines[1] = " ".join(listaSinalTrocado)
 
 listona = []
 lista = []
