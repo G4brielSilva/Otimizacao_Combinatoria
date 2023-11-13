@@ -4,6 +4,7 @@ with open("./problema_lp/problema1.txt", "r") as arq:
     content = arq.read()
 lines = content.split("\n")
 
+# lidando com a maximização
 listaSinalTrocado = []
 if lines[0].split(" ")[2] == "1":
     for i in range(len(lines[1].split(" "))):
@@ -12,6 +13,7 @@ if lines[0].split(" ")[2] == "1":
             listaSinalTrocado[i] = str(float(listaSinalTrocado[i]) * -1)
     lines[1] = " ".join(listaSinalTrocado)
 
+#montando o tableau inicial
 listona = []
 lista = []
 for i in range(1, int(content[0]) + 2):
