@@ -1,6 +1,6 @@
 import pandas as pd
 
-with open("./problema_lp/problema1.txt", "r") as arq:
+with open("./problema_lp/problema3.txt", "r") as arq:
     content = arq.read()
 lines = content.split("\n")
 
@@ -13,7 +13,22 @@ if lines[0].split(" ")[2] == "1":
             listaSinalTrocado[i] = str(float(listaSinalTrocado[i]) * -1)
     lines[1] = " ".join(listaSinalTrocado)
 
-#montando o tableau inicial
+# lidando com termos independentes negativos
+for i in range(2, int(lines[0][0]) + 2):
+    if int(lines[i].split(" ")[int(content[2]) + 1]) < 0:
+        linha = [
+            float(item) * -1 if index != len(lines[i].split(" ")) - 2 else item
+            for index, item in enumerate(lines[i].split(" "))
+        ]
+        if linha[int(lines[0].split(" ")[1])] == ">=":
+            linha[int(lines[0].split(" ")[1])] = "<="
+        if linha[int(lines[0].split(" ")[1])] == "<=":
+            linha[int(lines[0].split(" ")[1])] = ">="
+        linha = [str(elemento) for elemento in linha]
+        linha = " ".join(linha)
+        lines[i] = linha
+
+# montando o tableau inicial
 listona = []
 lista = []
 for i in range(1, int(content[0]) + 2):
@@ -28,5 +43,5 @@ for i in range(1, int(content[0]) + 2):
 df = pd.DataFrame(listona)
 listona = []
 df = df.fillna(0)
-df[int(content[2])] = df[int(content[2])].astype(int)
+df[int(content[2])] = df[int(content[2])].astype(float)
 print(df)
