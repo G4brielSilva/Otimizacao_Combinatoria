@@ -1,20 +1,19 @@
 import numpy as np
 
-def solve(tableau, otimizacao):
+
+def solve(tableau):
     best_i = -1
     exit_val_i = -1
     while True:
+        print()
+        print(tableau)
         fo = np.delete(tableau[0], np.where(tableau[0] == 0))
         
-        # TODO Considere verificar se tem que fazer tratativa pra max e min ou se tem como só jogar todo problema de max pra mim ou vice versa
-        if otimizacao: best = np.amax(fo)
-        else: best = np.amin(fo)
-
+        best = np.amin(fo)
+        print(best)
         
         # Interrompendo se não houverem valores negativos na minimização
-        if not otimizacao and best > 0: break
-        # Interrompendo se não houverem valores positivos na maximização
-        if otimizacao and best < 0: break
+        if best > 0: break
 
         # Selecionando a Variável de Entrada
         best_i = np.where(fo == best)[0][0]
@@ -26,18 +25,22 @@ def solve(tableau, otimizacao):
         pivot_column = tableau[:,best_i]
         
         b = tableau[:,-1]
-        b_results = b/pivot_column
-        b_results = np.delete(b_results, np.where(b_results <= 0))
-
-        if len(b_results) == 0: break
+        b_results = [bi/pivot if pivot != 0 else bi for bi, pivot in zip(b, pivot_column)]
+        b_results = np.array(b_results)
+        b_results_without0 = np.delete(b_results, np.where(b_results <= 0))
+        if len(b_results_without0) == 0: break
 
         # Selecionando a Variável de Saída
-        exit_val = np.amin(b_results)
-        exit_val_i = np.where(b_results == exit_val)[0][0] + 1
+        exit_val = np.amin(b_results_without0)
+        exit_val_i = np.where(b_results == exit_val)[0][0]
         
         # Transformando em Identidade
         # Dividindo a linha da variável de Entrada para
-        tableau[exit_val_i] = tableau[exit_val_i]/tableau[exit_val_i][best_i]
+        if tableau[exit_val_i][best_i] != 0:
+            # tableau[exit_val_i] = np.where(tableau[exit_val_i] != 0, tableau[exit_val_i] / tableau[exit_val_i][best_i], tableau[exit_val_i])
+            tableau[exit_val_i] = tableau[exit_val_i] / tableau[exit_val_i][best_i]
+
+        # Problema é que na segunda iteração ele ta pegando a mesma linha, no caso eu to usando menor, se for maior acho que muda
 
         # Transformações lineares
         for row_i in range(len(tableau)):
