@@ -8,32 +8,37 @@ def solve(tableau):
         print()
         print(tableau)
         fo = np.delete(tableau[0], np.where(tableau[0] == 0))
-        
+
         best = np.amin(fo)
         print(best)
-        
+
         # Interrompendo se não houverem valores negativos na minimização
-        if best > 0: break
+        if best > 0:
+            break
 
         # Selecionando a Variável de Entrada
         best_i = np.where(fo == best)[0][0]
 
         # Interrompendo se o valor de melhora for o mesmo que foi removido anteriormente
-        if best_i == exit_val_i: break
+        if best_i == exit_val_i:
+            break
 
-        #Selecionando a Coluna Pivô
-        pivot_column = tableau[:,best_i]
-        
-        b = tableau[:,-1]
-        b_results = [bi/pivot if pivot != 0 else bi for bi, pivot in zip(b, pivot_column)]
+        # Selecionando a Coluna Pivô
+        pivot_column = tableau[:, best_i]
+
+        b = tableau[:, -1]
+        b_results = [
+            bi / pivot if pivot != 0 else bi for bi, pivot in zip(b, pivot_column)
+        ]
         b_results = np.array(b_results)
         b_results_without0 = np.delete(b_results, np.where(b_results <= 0))
-        if len(b_results_without0) == 0: break
+        if len(b_results_without0) == 0:
+            break
 
         # Selecionando a Variável de Saída
         exit_val = np.amin(b_results_without0)
         exit_val_i = np.where(b_results == exit_val)[0][0]
-        
+
         # Transformando em Identidade
         # Dividindo a linha da variável de Entrada para
         if tableau[exit_val_i][best_i] != 0:
@@ -44,11 +49,11 @@ def solve(tableau):
 
         # Transformações lineares
         for row_i in range(len(tableau)):
-            if (row_i != exit_val_i):
+            if row_i != exit_val_i:
                 pivot = tableau[row_i][best_i]
                 row = -pivot * tableau[exit_val_i]
                 tableau[row_i] = tableau[row_i] + row
-        
+
         tableau = np.around(tableau, 2)
 
-    return tableau[:,-1]
+    return tableau[:, -1]
