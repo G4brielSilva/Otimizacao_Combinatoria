@@ -24,9 +24,6 @@ def criar_tableau(
                 operations[i] = ">="
             elif operations[i] == ">=":
                 operations[i] = "<="
-        if operations[i] == "==":
-            tableau[i + 1, num_variaveis + i] = 1  
-            tableau[i + 1, -1] = termos_independentes[i]
     
     for termo in termos_independentes:
         if termo <0:
@@ -50,6 +47,7 @@ def criar_tableau(
 
         tableau[i + 1, -1] = termos_independentes[i]
 
+    M = 1000
     if rows_need_var_art:
         var_art = np.zeros((len(tableau), len(tableau)))
 
@@ -57,8 +55,7 @@ def criar_tableau(
             if i in rows_need_var_art:
                 var_art[0][i] = 1
                 var_art[i][i] = 1
-            # array_atualizado = np.insert(array_original, array_original.shape[1], nova_coluna, axis=1)
-
+                tableau[0][i] = M
 
         b = tableau[: , -1]
         var_art = np.array(var_art)
